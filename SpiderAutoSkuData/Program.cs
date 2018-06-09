@@ -32,6 +32,7 @@ namespace SpiderAutoSkuData
             Request res = new Request();
             res.Url = "https://mall.autohome.com.cn/detail/284641-0-0.html";
             res.Method = System.Net.Http.HttpMethod.Get;
+            res.Depth = 1;
             resList.Add(res);
             var spider = Spider.Create(site, new QueueDuplicateRemovedScheduler(), new GetSkuProcessor(),new GetBasicInfoProcessor(),new GetExtInfoProcessor()) //因为我们有多个Processor，所以都要添加进来
                 .AddStartRequests(resList.ToArray())
@@ -45,7 +46,7 @@ namespace SpiderAutoSkuData
         {
             public GetSkuProcessor()
             {
-                TargetUrlsExtractor = new RegionAndPatternTargetUrlsExtractor(".", @"^https://mall\.autohome\.com\.cn/detail/*");
+                TargetUrlsExtractor = new RegionAndPatternTargetUrlsExtractor(".", @"^https:\/\/mall.autohome.com.cn\/detail\/*[0-9]+-[0-9]+-[0-9]+\.html$");
             }
             protected override void Handle(Page page)
             {
