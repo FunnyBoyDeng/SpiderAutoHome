@@ -97,8 +97,7 @@ namespace SpiderAutoLogo
                 httpRequestMessage.Method = HttpMethod.Get;
                 HttpClient httpClient = new HttpClient();
                 var httpResponse = httpClient.SendAsync(httpRequestMessage);
-                var intervalPath = new Uri(url);
-                string filePath = Environment.CurrentDirectory + "/img/";
+                string filePath = Environment.CurrentDirectory + "/img/"+ filename + ".jpg";
                 if (!File.Exists(filePath))
                 {
                     try
@@ -112,7 +111,7 @@ namespace SpiderAutoLogo
                             }
                         }
 
-                        File.WriteAllBytes(filePath + filename + ".jpg", httpResponse.Result.Content.ReadAsByteArrayAsync().Result);
+                        File.WriteAllBytes(filePath, httpResponse.Result.Content.ReadAsByteArrayAsync().Result);
                     }
                     catch
                     {
