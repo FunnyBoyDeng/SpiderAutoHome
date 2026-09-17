@@ -52,7 +52,7 @@ namespace SpiderAutoHome.Tests
 
             var response = new Response
             {
-                Content = new ByteArrayContent(
+                Content = new DotnetSpider.Http.ByteArrayContent(
                     Encoding.UTF8.GetBytes(html))
             };
 
