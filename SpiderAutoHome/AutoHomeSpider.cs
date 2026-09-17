@@ -19,6 +19,8 @@ namespace SpiderAutoHome
         protected override Task InitializeAsync(
             CancellationToken stoppingToken = default)
         {
+            AddDataFlow<AutoHomeParser>();
+
             return Task.CompletedTask;
         }
     }
