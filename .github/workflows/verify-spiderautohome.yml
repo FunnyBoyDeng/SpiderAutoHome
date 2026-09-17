@@ -1,0 +1,29 @@
+name: Verify SpiderAutoHome migration
+
+on:
+  push:
+    branches:
+      - modernize/dotnet10-spiderautohome
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Show SDK
+        run: dotnet --info
+
+      - name: Restore SpiderAutoHome
+        run: dotnet restore SpiderAutoHome/SpiderAutoHome.csproj
+
+      - name: Build SpiderAutoHome
+        run: dotnet build SpiderAutoHome/SpiderAutoHome.csproj --no-restore --configuration Release
