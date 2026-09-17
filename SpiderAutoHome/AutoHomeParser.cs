@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DotnetSpider.DataFlow;
 using DotnetSpider.DataFlow.Parser;
+using DotnetSpider.Selector;
 
 namespace SpiderAutoHome
 {
@@ -17,9 +18,9 @@ namespace SpiderAutoHome
         {
             var list = new List<AutoHomeShopListEntity>();
 
-            var modelHtmlList = context.Selectable
-                .XPath(".//div[@class='list']/ul[@class='fn-clear']/li[@class='carbox']")
-                ?.Nodes();
+            var modelHtmlList = context.Selectable.SelectList(
+                Selectors.XPath(
+                    ".//div[@class='list']/ul[@class='fn-clear']/li[@class='carbox']"));
 
             if (modelHtmlList == null)
             {
@@ -31,15 +32,25 @@ namespace SpiderAutoHome
             {
                 var entity = new AutoHomeShopListEntity
                 {
-                    DetailUrl = modelHtml.XPath(".//a/@href")?.Value,
-                    CarImg = modelHtml.XPath(
-                        ".//a/div[@class='carbox-carimg']/img/@src")?.Value,
-                    Title = modelHtml.XPath(
-                        ".//a/div[@class='carbox-title']")?.Value,
-                    Tip = modelHtml.XPath(
-                        ".//a/div[@class='carbox-tip']")?.Value,
-                    BuyNum = modelHtml.XPath(
-                        ".//a/div[@class='carbox-number']/span")?.Value
+                    DetailUrl = modelHtml
+                        .XPath(".//a/@href")
+                        ?.Value,
+
+                    CarImg = modelHtml
+                        .XPath(".//a/div[@class='carbox-carimg']/img/@src")
+                        ?.Value,
+
+                    Title = modelHtml
+                        .XPath(".//a/div[@class='carbox-title']")
+                        ?.Value,
+
+                    Tip = modelHtml
+                        .XPath(".//a/div[@class='carbox-tip']")
+                        ?.Value,
+
+                    BuyNum = modelHtml
+                        .XPath(".//a/div[@class='carbox-number']/span")
+                        ?.Value
                 };
 
                 var priceText = modelHtml
