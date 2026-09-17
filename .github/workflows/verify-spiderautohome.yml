@@ -1,9 +1,13 @@
-name: Verify SpiderAutoHome migration
+name: Verify SpiderAutoHome
 
 on:
   push:
     branches:
+      - master
       - modernize/dotnet10-spiderautohome
+  pull_request:
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
