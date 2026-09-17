@@ -32,4 +32,4 @@ jobs:
         run: dotnet restore SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj
 
       - name: Run tests
-        run: dotnet test SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --no-restore --configuration Release --logger "console;verbosity=normal"
+        run: dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-restore
