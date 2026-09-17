@@ -23,11 +23,15 @@ namespace SpiderAutoHome
         protected override async Task InitializeAsync(
             CancellationToken stoppingToken = default)
         {
+            // 注册页面解析器
             AddDataFlow<AutoHomeParser>();
+
+            // 将解析结果输出到控制台
             AddDataFlow<ConsoleStorage>();
 
             var requests = new List<Request>();
 
+            // 原项目共抓取 33 页
             for (var page = 1; page <= 33; page++)
             {
                 var formData =
@@ -37,8 +41,13 @@ namespace SpiderAutoHome
                     "https://store.mall.autohome.com.cn/shop/ajaxsitemodlecontext.jtml")
                 {
                     Method = "POST",
-                    Content = new ByteArrayContent(
-                        Encoding.UTF8.GetBytes(formData))
+
+                    // 使用 DotnetSpider 自己的 StringContent，
+                    // 直接指定 UTF-8 和表单 Content-Type。
+                    Content = new StringContent(
+                        formData,
+                        Encoding.UTF8,
+                        "application/x-www-form-urlencoded")
                 };
 
                 requests.Add(request);
