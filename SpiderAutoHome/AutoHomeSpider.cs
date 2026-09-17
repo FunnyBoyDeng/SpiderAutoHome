@@ -1,27 +1,25 @@
-﻿using DotnetSpider.Extension;
-using System;
-using System.Collections.Generic;
-using DotnetSpider.Core;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using DotnetSpider;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace SpiderAutoHome
 {
-    public class AutoHomeSpider : EntitySpider
+    public class AutoHomeSpider : Spider
     {
-        public AutoHomeSpider() : base()
+        public AutoHomeSpider(
+            IOptions<SpiderOptions> options,
+            DependenceServices services,
+            ILogger<Spider> logger)
+            : base(options, services, logger)
         {
         }
-        public AutoHomeSpider(Site site) : base(site)
+
+        protected override Task InitializeAsync(
+            CancellationToken stoppingToken = default)
         {
+            return Task.CompletedTask;
         }
-       
-
-        protected override void MyInit(params string[] arguments)
-        {
-            
-            
-        }
-
-
     }
 }
