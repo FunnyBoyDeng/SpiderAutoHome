@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -27,3 +27,9 @@ jobs:
 
       - name: Build SpiderAutoHome
         run: dotnet build SpiderAutoHome/SpiderAutoHome.csproj --no-restore --configuration Release
+
+      - name: Restore tests
+        run: dotnet restore SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj
+
+      - name: Run tests
+        run: dotnet test SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --no-restore --configuration Release --logger "console;verbosity=normal"
