@@ -26,7 +26,7 @@ Project: `SpiderAutoHome`
 
 Chinese tutorial:
 
-https://www.cnblogs.com/FunnyBoy/p/9029937.html
+https://www.cnblogs.com/FunnyBoy/p/8453338.html
 
 ### 2. Automobile Product Detail Extraction
 
@@ -34,7 +34,7 @@ Project: `SpiderAutoSkuData`
 
 Chinese tutorial:
 
-https://www.cnblogs.com/FunnyBoy/p/8453338.html
+https://www.cnblogs.com/FunnyBoy/p/9029937.html
 
 ### 3. Automobile Brand & Logo Extraction
 
