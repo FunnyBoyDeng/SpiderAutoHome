@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using DotnetSpider;
+using DotnetSpider.DataFlow;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -20,6 +21,7 @@ namespace SpiderAutoHome
             CancellationToken stoppingToken = default)
         {
             AddDataFlow<AutoHomeParser>();
+            AddDataFlow<ConsoleStorage>();
 
             return Task.CompletedTask;
         }
