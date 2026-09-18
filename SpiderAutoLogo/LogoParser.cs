@@ -52,8 +52,19 @@ public sealed class LogoParser : DataParser
             value = $"https:{value}";
         }
 
-        if (!Uri.TryCreate(value, UriKind.Absolute, out var absoluteUri) &&
-            !Uri.TryCreate(pageUri, value, out absoluteUri))
+        Uri? absoluteUri;
+        var isRootRelative = value[0] == '/' &&
+                             !value.StartsWith("//", StringComparison.Ordinal);
+
+        if (isRootRelative)
+        {
+            if (!Uri.TryCreate(pageUri, value, out absoluteUri))
+            {
+                return null;
+            }
+        }
+        else if (!Uri.TryCreate(value, UriKind.Absolute, out absoluteUri) &&
+                 !Uri.TryCreate(pageUri, value, out absoluteUri))
         {
             return null;
         }
