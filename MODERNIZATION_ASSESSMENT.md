@@ -1,8 +1,10 @@
 # SpiderAutoHome Modernization Assessment
 
+> **Historical planning record (2026):** This assessment captured the repository before implementation. All three samples have since moved to .NET 10, gained offline tests, and entered CI. See [README.md](README.md) for current status.
+
 This document records the initial technical assessment of the legacy SpiderAutoHome solution before framework or dependency upgrades are made.
 
-The purpose of this assessment is to separate factual review from migration decisions. No target framework or dependency migration is considered complete until it has been implemented and tested.
+The purpose of this assessment was to separate factual review from migration decisions before the first migration was implemented and tested.
 
 ## 1. Current Solution Structure
 

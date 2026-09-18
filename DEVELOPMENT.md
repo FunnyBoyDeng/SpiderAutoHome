@@ -1,189 +1,96 @@
-# Development Guide
+# Development guide
 
-This document describes the current development status and project structure of SpiderAutoHome.
+This guide describes the verified development workflow for all three modernized samples.
 
-> **Important:** The repository currently contains a legacy .NET Core 2.0 codebase. .NET Core 2.0 is no longer supported. The instructions below primarily document the historical project structure while modernization work is in progress.
+## Toolchain
 
-## Repository Structure
+- .NET SDK 10.0 (selected by the repository's `global.json`)
+- DotnetSpider 5.1.7
+- xUnit v3 with Microsoft Testing Platform
 
-The solution contains three console application projects:
-
-```text
-SpiderAutoHome.sln
-├── SpiderAutoHome/
-│   └── SpiderAutoHome.csproj
-├── SpiderAutoSkuData/
-│   └── SpiderAutoSkuData.csproj
-└── SpiderAutoLogo/
-    └── SpiderAutoLogo.csproj
-```
-
-### SpiderAutoHome
-
-Example project for automobile shop data extraction.
-
-Current target framework:
-
-```text
-netcoreapp2.0
-```
-
-Legacy dependencies:
-
-```text
-DotnetSpider.Core      2.5.0
-DotnetSpider.Extension 2.5.0
-```
-
-### SpiderAutoSkuData
-
-Example project for automobile product/detail data extraction.
-
-Current target framework:
-
-```text
-netcoreapp2.0
-```
-
-Legacy dependencies:
-
-```text
-DotnetSpider.Core      2.5.0
-DotnetSpider.Extension 2.5.0
-```
-
-### SpiderAutoLogo
-
-Example project for automobile brand and logo data extraction.
-
-Current target framework:
-
-```text
-netcoreapp2.0
-```
-
-Legacy dependencies:
-
-```text
-DotnetSpider.Core      2.5.1
-DotnetSpider.Extension 2.5.0
-```
-
-## Clone the Repository
+Check the active SDK:
 
 ```bash
-git clone https://github.com/FunnyBoyDeng/SpiderAutoHome.git
-cd SpiderAutoHome
+dotnet --info
 ```
 
-## Legacy Development Environment
+## Verified workflow
 
-The original project was created with tooling from the .NET Core 2.0 era.
-
-Because .NET Core 2.0 is end-of-life, developers should not assume that the current source code will build successfully with a modern .NET SDK without modification.
-
-The repository is currently being reviewed before selecting a supported .NET target for the modernization branch.
-
-For this reason, contributors should avoid making broad framework or dependency upgrades without first discussing the migration approach in an issue.
-
-## Historical Build Commands
-
-With a compatible legacy .NET Core environment, the solution used the standard .NET CLI workflow:
+Restore the modernized application and its tests:
 
 ```bash
-dotnet restore
-dotnet build SpiderAutoHome.sln
+dotnet restore SpiderAutoHome.Modern.slnx --locked-mode
 ```
 
-Individual projects can also be referenced directly:
+Build in the same configuration used by CI:
 
 ```bash
-dotnet build SpiderAutoHome/SpiderAutoHome.csproj
-dotnet build SpiderAutoSkuData/SpiderAutoSkuData.csproj
-dotnet build SpiderAutoLogo/SpiderAutoLogo.csproj
+dotnet build SpiderAutoHome.Modern.slnx \
+  --configuration Release \
+  --no-restore
 ```
 
-These commands document the expected project structure. They are not currently guaranteed to work with modern .NET SDK releases.
+Run the offline test executable:
 
-## Running a Project
+```bash
+dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj \
+  --configuration Release \
+  --no-build
+```
 
-With a compatible environment, a project can be started using:
+The repository configures Microsoft Testing Platform in `global.json`; `dotnet test` behavior can vary by SDK/test-runner integration, so CI deliberately invokes the test executable.
+
+## Dependency audit
+
+NuGet audit is enabled for direct and transitive dependencies. Findings with low, moderate, high, or critical severity are promoted to build errors through `Directory.Build.props`.
+
+To inspect the resolved graph:
+
+```bash
+dotnet list SpiderAutoHome.Modern.slnx package --include-transitive
+dotnet list SpiderAutoHome.Modern.slnx package --vulnerable --include-transitive
+```
+
+`MessagePack` is pinned to a patched 2.5.x version because DotnetSpider 5.1.7 otherwise resolves an older vulnerable transitive version. Remove the explicit pin after the upstream dependency is updated and the audit remains clean.
+
+## Project boundaries
+
+### Modernized and verified
+
+- `SpiderAutoHome/`
+- `SpiderAutoSkuData/`
+- `SpiderAutoLogo/`
+- `SpiderAutoHome.Tests/`
+
+All projects target .NET 10, use DotnetSpider 5.1.7 where applicable, and are included in the current CI build.
+
+## Testing principles
+
+1. Put representative HTML or JSON in deterministic fixtures.
+2. Keep normal CI independent from live third-party services.
+3. Test empty, partial, and changed markup as well as the happy path.
+4. Keep request construction separate from parsing when new features are added.
+5. Never commit credentials, cookies, tokens, or personal data in fixtures.
+
+## Running the live sample
 
 ```bash
 dotnet run --project SpiderAutoHome/SpiderAutoHome.csproj
 ```
 
-or:
+This command contacts the configured endpoint. Before using it, confirm that the endpoint is still appropriate, review current access rules, and keep request volume conservative. External HTML and APIs can change independently of this repository, so a successful offline build does not guarantee live-site compatibility.
 
-```bash
-dotnet run --project SpiderAutoSkuData/SpiderAutoSkuData.csproj
-```
+The SKU sample accepts an optional `SPIDERAUTOHOME_SKU_URL` environment variable. Its parser and request factory are tested with in-memory HTML and JSON fixtures.
 
-or:
+The logo sample accepts `SPIDERAUTOHOME_LOGO_URL`. Asset downloads require `SPIDERAUTOHOME_DOWNLOAD_LOGOS=true`; `SPIDERAUTOHOME_LOGO_DIR` selects the output directory. Downloads stay off during tests and CI.
 
-```bash
-dotnet run --project SpiderAutoLogo/SpiderAutoLogo.csproj
-```
+## Pull-request checklist
 
-Again, the current legacy code may require modernization before it runs successfully on a supported .NET SDK.
+- Link the relevant issue for non-trivial work.
+- Keep the change focused and explain compatibility decisions.
+- Add or update offline tests for parser behavior.
+- Run the verified restore/build/test workflow.
+- Update documentation when status or behavior changes.
+- Review `dotnet list package --vulnerable --include-transitive`.
 
-## Current Development Status
-
-Maintenance resumed in 2026.
-
-The current development process is divided into two stages.
-
-### Stage 1 — Repository Maintenance
-
-This stage focuses on:
-
-* documentation;
-* licensing;
-* contribution guidelines;
-* historical issue review;
-* development environment documentation.
-
-### Stage 2 — Code Modernization
-
-The next stage will focus on:
-
-* reviewing the current source and dependencies;
-* selecting a supported .NET target;
-* evaluating the current DotnetSpider API;
-* migrating legacy dependencies;
-* restoring successful builds;
-* adding automated tests;
-* adding CI.
-
-Modernization progress is tracked in the repository Roadmap issue.
-
-## Before Making Code Changes
-
-Before modifying framework targets or DotnetSpider dependencies:
-
-1. Check the current Roadmap issue.
-2. Open or reference an issue describing the proposed change.
-3. Keep migration changes focused and reviewable.
-4. Record compatibility or behavior changes.
-5. Do not describe untested migration work as production-ready.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for the general contribution workflow.
-
-## Responsible Development
-
-This project is intended for educational and research purposes.
-
-Development and testing should use data and systems that contributors are authorized to access.
-
-Do not add functionality specifically intended to bypass authentication, access controls, anti-abuse protections, rate limits, or other technical restrictions.
-
-## Modernization Notes
-
-The supported .NET target for the modernized version has not yet been selected.
-
-Until dependency compatibility has been reviewed, the repository will continue to clearly distinguish between:
-
-* the original .NET Core 2.0 implementation;
-* future modernized implementation work.
-
-This document will be updated as the modernization progresses.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution process and [SECURITY.md](SECURITY.md) for private vulnerability reporting.

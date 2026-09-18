@@ -1,110 +1,111 @@
 # SpiderAutoHome
 
+[简体中文](README.zh-CN.md) | English
+
+[![Verify SpiderAutoHome](https://github.com/FunnyBoyDeng/SpiderAutoHome/actions/workflows/verify-spiderautohome.yml/badge.svg)](https://github.com/FunnyBoyDeng/SpiderAutoHome/actions/workflows/verify-spiderautohome.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![.NET 10](https://img.shields.io/badge/.NET-10.0-512BD4)](https://dotnet.microsoft.com/)
+[![GitHub stars](https://img.shields.io/github/stars/FunnyBoyDeng/SpiderAutoHome)](https://github.com/FunnyBoyDeng/SpiderAutoHome/stargazers)
 
-SpiderAutoHome is an educational C#/.NET project demonstrating practical web data extraction workflows with [DotnetSpider](https://github.com/dotnetcore/DotnetSpider).
+SpiderAutoHome is an educational C# repository that shows three practical web-data extraction patterns with [DotnetSpider](https://github.com/dotnetcore/DotnetSpider): paginated form requests, multi-step detail/API extraction, and brand asset discovery.
 
-The project was originally created as part of a Chinese-language DotnetSpider tutorial series and provides practical examples based on structured automotive web data.
+The project began in 2018 as a Chinese tutorial series. Active maintenance resumed in 2026 to preserve those examples, make them reproducible on a supported .NET toolchain, and provide a small real-world migration reference from DotnetSpider 2.x to 5.x.
 
-> **Project status:** This is a legacy educational project originally built with .NET Core 2.0 and DotnetSpider 2.5.0. Maintenance has resumed in 2026, with plans to modernize the codebase, documentation, tests, and development workflow.
+> All three samples now build on .NET 10 and DotnetSpider 5.1.7. Their parsers, request construction, JSON models, URL normalization, and filename handling are covered by offline tests. Live third-party markup and API contracts may differ from the stored educational examples.
 
-## Features
+## Why this repository is useful
 
-The tutorial series demonstrates several common web data extraction scenarios:
+- Preserves a complete Chinese-language DotnetSpider tutorial series and its source.
+- Demonstrates the architectural migration from `Site` / `BasePageProcessor` / `BasePipeline` to the modern host, `Spider`, `DataParser`, and data-flow APIs.
+- Keeps parser tests offline and deterministic, so CI never depends on a third-party website.
+- Documents compatibility decisions and known limitations rather than hiding legacy constraints.
+- Provides focused examples that are smaller than a production crawler and easier for new contributors to study.
 
-* Extracting structured automobile shop information
-* Extracting automobile product/detail information
-* Extracting automobile brand and logo information
-* Building spiders with DotnetSpider
-* Processing structured web data with C#/.NET
+## Repository status
 
-## Tutorial Series
+| Project | Purpose | Runtime | Status |
+| --- | --- | --- | --- |
+| `SpiderAutoHome` | Paginated shop/list parsing | .NET 10 / DotnetSpider 5.1.7 | Builds and is covered by offline parser tests |
+| `SpiderAutoHome.Tests` | Deterministic parser fixtures | .NET 10 / xUnit v3 | Runs in GitHub Actions |
+| `SpiderAutoSkuData` | Multi-step product detail/API extraction | .NET 10 / DotnetSpider 5.1.7 | Builds; typed JSON and follow-request tests |
+| `SpiderAutoLogo` | Brand/logo extraction and opt-in asset downloads | .NET 10 / DotnetSpider 5.1.7 | Builds; parsing, URL, and filename tests |
 
-### 1. Automobile Shop Data Extraction
+The modernization roadmap is tracked in [GitHub issue #3](https://github.com/FunnyBoyDeng/SpiderAutoHome/issues/3). Historical assessment documents remain in the repository so that migration decisions are auditable.
 
-Project: `SpiderAutoHome`
+## Quick start
 
-Chinese tutorial:
+### Prerequisites
 
-https://www.cnblogs.com/FunnyBoy/p/8453338.html
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+- Git
 
-### 2. Automobile Product Detail Extraction
+### Build and test the modernized sample
 
-Project: `SpiderAutoSkuData`
+```bash
+git clone https://github.com/FunnyBoyDeng/SpiderAutoHome.git
+cd SpiderAutoHome
+dotnet restore SpiderAutoHome.Modern.slnx --locked-mode
+dotnet build SpiderAutoHome.Modern.slnx --configuration Release --no-restore
+dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-build
+```
 
-Chinese tutorial:
+The test suite uses in-memory HTML fixtures and makes no live scraping requests.
 
-https://www.cnblogs.com/FunnyBoy/p/9029937.html
+Both `SpiderAutoHome.Modern.slnx` and the Visual Studio `SpiderAutoHome.sln` build all three samples and the test project.
 
-### 3. Automobile Brand & Logo Extraction
+### Run the sample
 
-Project: `SpiderAutoLogo`
+```bash
+dotnet run --project SpiderAutoHome/SpiderAutoHome.csproj
+```
 
-Chinese tutorial:
+Run the multi-step SKU sample with its historical default detail URL, or supply another permitted detail page through the environment:
 
-https://www.cnblogs.com/FunnyBoy/p/9097377.html
+```bash
+SPIDERAUTOHOME_SKU_URL=https://example.com/permitted-detail \
+  dotnet run --project SpiderAutoSkuData/SpiderAutoSkuData.csproj
+```
 
-## Demo
+Logo downloads are disabled by default. Enable them explicitly and optionally choose an output directory:
 
-A demonstration video of the original project is available on Bilibili:
+```bash
+SPIDERAUTOHOME_DOWNLOAD_LOGOS=true \
+SPIDERAUTOHOME_LOGO_DIR=./img \
+  dotnet run --project SpiderAutoLogo/SpiderAutoLogo.csproj
+```
 
-https://www.bilibili.com/video/av24022630/
+Running the sample performs network requests to its configured data source. Review the endpoint, current site rules, request rate, and your intended use before running it. For learning or contribution work, prefer the offline tests.
 
-## Technology
+## Tutorial series
 
-The original codebase uses:
+1. [Automobile shop data extraction](https://www.cnblogs.com/FunnyBoy/p/8453338.html) — `SpiderAutoHome`
+2. [Automobile product detail extraction](https://www.cnblogs.com/FunnyBoy/p/9029937.html) — `SpiderAutoSkuData`
+3. [Automobile brand and logo extraction](https://www.cnblogs.com/FunnyBoy/p/9097377.html) — `SpiderAutoLogo`
 
-* C#
-* .NET Core 2.0
-* DotnetSpider 2.5.0
+An original [demonstration video](https://www.bilibili.com/video/av24022630/) is also available.
 
-These dependencies are historical and may no longer represent currently supported versions.
+## Engineering and maintenance
 
-## Modernization Plan
+- [Development guide](DEVELOPMENT.md)
+- [Contributing guide](CONTRIBUTING.md)
+- [Security policy](SECURITY.md)
+- [Maintainers and response expectations](MAINTAINERS.md)
+- [Release process](RELEASING.md)
+- [Modernization assessment](MODERNIZATION_ASSESSMENT.md)
+- [Target framework decision](TARGET_FRAMEWORK_DECISION.md)
+- [DotnetSpider compatibility mapping](DOTNETSPIDER_COMPATIBILITY.md)
+- [Maintainer automation plan](docs/MAINTAINER_AUTOMATION.md)
 
-Maintenance of the project resumed in 2026.
-
-Planned improvements include:
-
-* [ ] Upgrade the project to a currently supported .NET version
-* [ ] Update or migrate legacy DotnetSpider dependencies
-* [ ] Improve installation and getting-started documentation
-* [ ] Add reproducible development and test instructions
-* [ ] Add automated tests
-* [ ] Add GitHub Actions CI
-* [ ] Improve dependency and security checks
-* [ ] Improve issue and pull-request workflows
-* [ ] Add responsible-use documentation
-* [ ] Improve English documentation for international contributors
-
-Progress will be tracked transparently through commits, issues, and pull requests.
-
-## Educational Purpose & Responsible Use
-
-This repository is intended primarily for educational and research purposes.
-
-Users are responsible for ensuring that their use of web data extraction complies with applicable laws, website terms of service, robots policies, rate limits, privacy requirements, and data-use restrictions.
-
-The examples in this repository should not be interpreted as authorization to collect data from any website.
+CI restores, builds, runs offline tests, and treats known NuGet vulnerability findings as errors. CodeQL scans the supported C# projects, and Dependabot monitors NuGet packages and GitHub Actions.
 
 ## Contributing
 
-Issues and pull requests are welcome.
+Issues and pull requests are welcome, especially for fixture-based tests, documentation, dependency maintenance, source-drift reports, and accessibility of the tutorial material. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a substantial change.
 
-As modernization work progresses, contribution guidelines and development documentation will be expanded.
+## Responsible use
 
-If you find outdated code, compatibility problems, documentation issues, or have ideas for improving the examples, please open an issue.
-
-## Acknowledgements
-
-This project was originally built using:
-
-[DotnetSpider](https://github.com/dotnetcore/DotnetSpider)
-
-Thanks to the DotnetSpider project and community.
+This repository teaches data-extraction architecture; it does not grant access to any third-party system. Use only data and systems you are permitted to access. Respect applicable terms, robots policies, privacy requirements, rate limits, and data-use restrictions. Do not add credentials, personal data, access-control bypasses, or anti-abuse evasion techniques to examples or fixtures.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
-
-Copyright © 2018–2026 FunnyBoyDeng.
+[MIT](LICENSE) © 2018–2026 FunnyBoyDeng.

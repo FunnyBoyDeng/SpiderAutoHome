@@ -16,10 +16,7 @@ Please keep contributions focused and reviewable.
 
 Changes should preserve the educational purpose of the project, avoid unnecessary large rewrites, and clearly document any behavior or compatibility changes.
 
-When updating legacy code, please distinguish between:
-
-* fixes to the original .NET Core 2.0 / DotnetSpider 2.5.0 implementation;
-* modernization work targeting newer .NET and DotnetSpider versions.
+All three samples now target .NET 10 and DotnetSpider 5.x. When changing behavior inherited from the 2018 implementation, explain the compatibility impact and add offline regression coverage.
 
 Untested migration work should not be presented as production-ready.
 
@@ -34,6 +31,17 @@ Before submitting a pull request:
 5. Update relevant documentation when behavior changes.
 
 Pull requests may be updated during review before they are merged.
+
+Run the verified workflow before submission:
+
+```bash
+dotnet restore SpiderAutoHome.Modern.slnx --locked-mode
+dotnet build SpiderAutoHome.Modern.slnx --configuration Release --no-restore
+dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-build
+dotnet list SpiderAutoHome.Modern.slnx package --vulnerable --include-transitive --no-restore
+```
+
+Parser tests must use sanitized offline fixtures. CI must not require a live third-party website.
 
 ## Issues
 
@@ -58,9 +66,11 @@ Web data extraction examples should respect applicable laws, website terms of se
 
 ## Code of Conduct
 
-Please keep discussions professional, constructive, and focused on improving the project.
+Participation is governed by [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-Respectful technical disagreement is welcome. Personal attacks, harassment, or abusive behavior are not.
+## Security
+
+Use the private process in [SECURITY.md](SECURITY.md) for vulnerability reports. Do not publish credentials, personal data, or exploitable report details in a public issue.
 
 ## License
 
