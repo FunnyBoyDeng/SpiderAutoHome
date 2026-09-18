@@ -2,12 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotnetSpider.Core" Version="2.5.0" />
-    <PackageReference Include="DotnetSpider.Extension" Version="2.5.0" />
+    <PackageReference Include="DotnetSpider" Version="5.1.7" />
+    <PackageReference Include="MessagePack" Version="2.5.303" />
   </ItemGroup>
 
 </Project>

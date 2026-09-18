@@ -2,11 +2,11 @@
 
 ## Status
 
-Compatibility assessment completed before implementation.
+Compatibility assessment completed before implementation. All three migrations described here are now implemented and covered by offline tests.
 
-This document evaluates the migration path from the DotnetSpider 2.5.x APIs currently used by SpiderAutoHome to the current DotnetSpider 5.x ecosystem.
+This document evaluates the migration path from the DotnetSpider 2.5.x APIs used by the original repository to the DotnetSpider 5.x ecosystem.
 
-No package upgrade or source migration is considered complete by this document.
+Treat the detailed sections as an auditable design record. See [README.md](README.md) and [DEVELOPMENT.md](DEVELOPMENT.md) for verified current commands and status.
 
 ## Baseline
 

@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj" />
+  <Project Path="SpiderAutoHome/SpiderAutoHome.csproj" />
+  <Project Path="SpiderAutoLogo/SpiderAutoLogo.csproj" />
+  <Project Path="SpiderAutoSkuData/SpiderAutoSkuData.csproj" />
+</Solution>

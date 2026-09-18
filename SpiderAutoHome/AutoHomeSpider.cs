@@ -37,7 +37,7 @@ namespace SpiderAutoHome
                     "https://store.mall.autohome.com.cn/shop/ajaxsitemodlecontext.jtml")
                 {
                     Method = "POST",
-                    Content = new StringContent(
+                    Content = new DotnetSpider.Http.StringContent(
                         formData,
                         Encoding.UTF8,
                         "application/x-www-form-urlencoded")
