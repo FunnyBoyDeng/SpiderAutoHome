@@ -1,30 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json.Serialization;
 
-namespace SpiderAutoSkuData
+namespace SpiderAutoSkuData;
+
+public sealed class AutoCarConfig
 {
-    public class AutoCarConfig
-    {
-        public string message { get; set; }
-        public ConfigResult result { get; set; }
-        public string returncode { get; set; }
-    }
-    public class ConfigResult
-    {
-        public string specid { get; set; }
+    [JsonPropertyName("message")]
+    public string? Message { get; init; }
 
-        public List<configtypeitem> configtypeitems { get; set; }
-    }
+    [JsonPropertyName("result")]
+    public ConfigResult? Result { get; init; }
 
-    public class configtypeitem
-    {
-        public string name { get; set; }
-        public List<configitem> configitems { get; set; }
-    }
-    public class configitem
-    {
-        public string name { get; set; }
-        public string value { get; set; }
-    }
+    [JsonPropertyName("returncode")]
+    public string? ReturnCode { get; init; }
+}
+
+public sealed class ConfigResult
+{
+    [JsonPropertyName("specid")]
+    public string? SpecId { get; init; }
+
+    [JsonPropertyName("configtypeitems")]
+    public List<ConfigTypeItem> ConfigTypeItems { get; init; } = [];
+}
+
+public sealed class ConfigTypeItem
+{
+    [JsonPropertyName("name")]
+    public string? Name { get; init; }
+
+    [JsonPropertyName("configitems")]
+    public List<ConfigItem> ConfigItems { get; init; } = [];
+}
+
+public sealed class ConfigItem
+{
+    [JsonPropertyName("name")]
+    public string? Name { get; init; }
+
+    [JsonPropertyName("value")]
+    public string? Value { get; init; }
 }

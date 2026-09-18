@@ -16,6 +16,8 @@
 
   <ItemGroup>
     <ProjectReference Include="../SpiderAutoHome/SpiderAutoHome.csproj" />
+    <ProjectReference Include="../SpiderAutoLogo/SpiderAutoLogo.csproj" />
+    <ProjectReference Include="../SpiderAutoSkuData/SpiderAutoSkuData.csproj" />
   </ItemGroup>
 
 </Project>
