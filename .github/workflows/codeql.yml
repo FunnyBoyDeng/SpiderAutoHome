@@ -1,4 +1,4 @@
-name: Verify SpiderAutoHome
+name: CodeQL
 
 on:
   push:
@@ -7,19 +7,23 @@ on:
   pull_request:
     branches:
       - master
+  schedule:
+    - cron: '23 3 * * 1'
   workflow_dispatch:
 
 permissions:
   contents: read
+  security-events: write
 
 concurrency:
-  group: verify-${{ github.workflow }}-${{ github.ref }}
+  group: codeql-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build-and-test:
+  analyze:
+    name: Analyze C#
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     env:
       CI: true
@@ -33,18 +37,17 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
-      - name: Show SDK
-        run: dotnet --info
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v4
+        with:
+          languages: csharp
+          build-mode: manual
 
-      - name: Restore supported projects and audit dependencies
+      - name: Restore supported projects
         run: dotnet restore SpiderAutoHome.Modern.slnx --locked-mode
 
       - name: Build supported projects
         run: dotnet build SpiderAutoHome.Modern.slnx --configuration Release --no-restore
 
-      - name: Run offline parser tests
-        run: dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-build
-
-      - name: Show resolved vulnerable packages
-        if: always()
-        run: dotnet list SpiderAutoHome.Modern.slnx package --vulnerable --include-transitive --no-restore
+      - name: Analyze
+        uses: github/codeql-action/analyze@v4

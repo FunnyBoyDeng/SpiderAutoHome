@@ -1,0 +1,56 @@
+name: Bug report
+description: Report a reproducible problem in a supported sample
+title: "[Bug]: "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve SpiderAutoHome. Remove credentials, cookies, tokens, and personal data before submitting.
+  - type: dropdown
+    id: project
+    attributes:
+      label: Affected project
+      options:
+        - SpiderAutoHome
+        - SpiderAutoHome.Tests
+        - SpiderAutoSkuData (legacy)
+        - SpiderAutoLogo (legacy)
+        - Documentation or CI
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Operating system and output of `dotnet --version`.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Prefer a minimal sanitized fixture over a live endpoint.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior and logs
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Submission checks
+      options:
+        - label: I removed secrets, cookies, tokens, and personal data.
+          required: true
+        - label: I checked existing issues and the documented legacy limitations.
+          required: true
