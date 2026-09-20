@@ -83,6 +83,35 @@ public class LogoParserTests
             () => LogoRequestFactory.Create("file:///tmp/brands.html"));
     }
 
+    [Fact]
+    public async Task DownloadFlowCopiesContentWithinLimit()
+    {
+        await using var source = new MemoryStream([1, 2, 3, 4]);
+        await using var destination = new MemoryStream();
+
+        await LogoDownloadFlow.CopyWithLimitAsync(
+            source,
+            destination,
+            4,
+            TestContext.Current.CancellationToken);
+
+        Assert.Equal([1, 2, 3, 4], destination.ToArray());
+    }
+
+    [Fact]
+    public async Task DownloadFlowRejectsContentOverLimit()
+    {
+        await using var source = new MemoryStream([1, 2, 3, 4, 5]);
+        await using var destination = new MemoryStream();
+
+        await Assert.ThrowsAsync<InvalidDataException>(
+            () => LogoDownloadFlow.CopyWithLimitAsync(
+                source,
+                destination,
+                4,
+                TestContext.Current.CancellationToken));
+    }
+
     private static DataFlowContext CreateContext(string url, string html)
     {
         var response = new Response

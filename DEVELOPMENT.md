@@ -84,6 +84,8 @@ The SKU sample accepts an optional `SPIDERAUTOHOME_SKU_URL` environment variable
 
 The logo sample accepts `SPIDERAUTOHOME_LOGO_URL`. Asset downloads require `SPIDERAUTOHOME_DOWNLOAD_LOGOS=true`; `SPIDERAUTOHOME_LOGO_DIR` selects the output directory. Downloads stay off during tests and CI.
 
+Downloads use a temporary file followed by an atomic move and enforce a 10 MiB per-file limit. CI runs the same locked build and offline suite on Windows and Linux to catch platform-specific URL and filesystem behavior.
+
 ## Pull-request checklist
 
 - Link the relevant issue for non-trivial work.
@@ -92,5 +94,6 @@ The logo sample accepts `SPIDERAUTOHOME_LOGO_URL`. Asset downloads require `SPID
 - Run the verified restore/build/test workflow.
 - Update documentation when status or behavior changes.
 - Review `dotnet list package --vulnerable --include-transitive`.
+- Run `./scripts/Test-MarkdownLinks.ps1` after changing documentation links.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution process and [SECURITY.md](SECURITY.md) for private vulnerability reporting.

@@ -50,7 +50,7 @@ SPIDERAUTOHOME_SKU_URL=https://example.com/permitted-detail \
   dotnet run --project SpiderAutoSkuData/SpiderAutoSkuData.csproj
 ```
 
-Logo 下载默认关闭。显式启用后还可以指定输出目录：
+Logo 下载默认关闭；启用后采用原子写入，并限制单个文件最大 10 MiB。还可以显式指定输出目录：
 
 ```bash
 SPIDERAUTOHOME_DOWNLOAD_LOGOS=true \
@@ -78,7 +78,7 @@ SPIDERAUTOHOME_LOGO_DIR=./img \
 - [维护自动化计划](docs/MAINTAINER_AUTOMATION.md)
 - [DotnetSpider 兼容性映射](DOTNETSPIDER_COMPATIBILITY.md)
 
-CI 会执行还原、构建和离线测试，并把 NuGet 已知漏洞视为构建错误；CodeQL 扫描受支持的 C# 项目，Dependabot 持续检查 NuGet 与 GitHub Actions 依赖。
+CI 会在 Windows 与 Linux 上执行还原、构建和离线测试，同时检查文档内部链接，并把编译器及 NuGet 漏洞警告视为构建错误；CodeQL 扫描受支持的 C# 项目，Dependabot 持续检查 NuGet 与 GitHub Actions 依赖。
 
 欢迎提交 issue 与 pull request，尤其是离线测试、文档、依赖维护、数据源结构变化报告和教程可访问性改进。
 

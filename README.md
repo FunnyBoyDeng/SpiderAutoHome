@@ -66,7 +66,7 @@ SPIDERAUTOHOME_SKU_URL=https://example.com/permitted-detail \
   dotnet run --project SpiderAutoSkuData/SpiderAutoSkuData.csproj
 ```
 
-Logo downloads are disabled by default. Enable them explicitly and optionally choose an output directory:
+Logo downloads are disabled by default, written atomically, and limited to 10 MiB per file. Enable them explicitly and optionally choose an output directory:
 
 ```bash
 SPIDERAUTOHOME_DOWNLOAD_LOGOS=true \
@@ -96,7 +96,7 @@ An original [demonstration video](https://www.bilibili.com/video/av24022630/) is
 - [DotnetSpider compatibility mapping](DOTNETSPIDER_COMPATIBILITY.md)
 - [Maintainer automation plan](docs/MAINTAINER_AUTOMATION.md)
 
-CI restores, builds, runs offline tests, and treats known NuGet vulnerability findings as errors. CodeQL scans the supported C# projects, and Dependabot monitors NuGet packages and GitHub Actions.
+CI restores, builds, and runs offline tests on both Windows and Linux. It also verifies local documentation links and treats compiler and NuGet vulnerability warnings as errors. CodeQL scans the supported C# projects, and Dependabot monitors NuGet packages and GitHub Actions.
 
 ## Contributing
 

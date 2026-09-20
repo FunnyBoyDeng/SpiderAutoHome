@@ -2,6 +2,7 @@
   <PropertyGroup>
     <AnalysisLevel>latest-recommended</AnalysisLevel>
     <Deterministic>true</Deterministic>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <NuGetAudit>true</NuGetAudit>

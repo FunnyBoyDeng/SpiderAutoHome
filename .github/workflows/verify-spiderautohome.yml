@@ -18,8 +18,16 @@ concurrency:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    name: Build and test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
 
     env:
       CI: true
@@ -44,6 +52,10 @@ jobs:
 
       - name: Run offline parser tests
         run: dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-build
+
+      - name: Verify local Markdown links
+        shell: pwsh
+        run: ./scripts/Test-MarkdownLinks.ps1
 
       - name: Show resolved vulnerable packages
         if: always()
