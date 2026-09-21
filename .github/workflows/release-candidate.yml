@@ -1,0 +1,60 @@
+name: Package release candidate
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version label for the artifact bundle
+        required: true
+        default: dev
+        type: string
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      CI: true
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore locked dependencies
+        run: dotnet restore SpiderAutoHome.Modern.slnx --locked-mode
+
+      - name: Build
+        run: dotnet build SpiderAutoHome.Modern.slnx --configuration Release --no-restore
+
+      - name: Test
+        run: dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-build
+
+      - name: Publish samples
+        run: |
+          dotnet publish SpiderAutoHome/SpiderAutoHome.csproj --configuration Release --no-restore --output artifacts/SpiderAutoHome
+          dotnet publish SpiderAutoSkuData/SpiderAutoSkuData.csproj --configuration Release --no-restore --output artifacts/SpiderAutoSkuData
+          dotnet publish SpiderAutoLogo/SpiderAutoLogo.csproj --configuration Release --no-restore --output artifacts/SpiderAutoLogo
+
+      - name: Record checksums
+        working-directory: artifacts
+        run: find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+
+      - name: Upload verified bundle
+        uses: actions/upload-artifact@v7
+        with:
+          name: SpiderAutoHome-${{ inputs.version || github.ref_name }}
+          path: artifacts/
+          if-no-files-found: error
+          retention-days: 14

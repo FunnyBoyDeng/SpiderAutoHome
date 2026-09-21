@@ -4,7 +4,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace SpiderAutoHome
 {
-    class Program
+    sealed class Program
     {
         static async Task Main(string[] args)
         {

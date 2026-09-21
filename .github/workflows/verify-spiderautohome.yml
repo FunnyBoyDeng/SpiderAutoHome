@@ -4,36 +4,62 @@ on:
   push:
     branches:
       - master
-      - modernize/dotnet10-spiderautohome
   pull_request:
     branches:
       - master
   workflow_dispatch:
 
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    name: Build and test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+    env:
+      CI: true
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup .NET 10
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v6
         with:
           dotnet-version: '10.0.x'
 
       - name: Show SDK
         run: dotnet --info
 
-      - name: Restore SpiderAutoHome
-        run: dotnet restore SpiderAutoHome/SpiderAutoHome.csproj
+      - name: Restore supported projects and audit dependencies
+        run: dotnet restore SpiderAutoHome.Modern.slnx --locked-mode
 
-      - name: Build SpiderAutoHome
-        run: dotnet build SpiderAutoHome/SpiderAutoHome.csproj --no-restore --configuration Release
+      - name: Build supported projects
+        run: dotnet build SpiderAutoHome.Modern.slnx --configuration Release --no-restore
 
-      - name: Restore tests
-        run: dotnet restore SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj
+      - name: Verify formatting
+        run: dotnet format SpiderAutoHome.Modern.slnx --verify-no-changes --no-restore
 
-      - name: Run tests
-        run: dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-restore
+      - name: Run offline parser tests
+        run: dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-build
+
+      - name: Verify local Markdown links
+        shell: pwsh
+        run: ./scripts/Test-MarkdownLinks.ps1
+
+      - name: Show resolved vulnerable packages
+        if: always()
+        run: dotnet list SpiderAutoHome.Modern.slnx package --vulnerable --include-transitive --no-restore

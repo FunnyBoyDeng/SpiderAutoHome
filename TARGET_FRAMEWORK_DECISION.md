@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for the modernization work.
+Implemented. All three samples and their tests now target .NET 10.
 
 ## Decision
 
@@ -12,9 +12,7 @@ The modernized SpiderAutoHome projects will target:
 net10.0
 ```
 
-The existing `netcoreapp2.0` implementation remains the historical baseline until the migration is implemented and validated.
-
-This document records the target-framework decision only. It does not mean that the source code or dependencies have already been successfully migrated.
+The original `netcoreapp2.0` implementation remains available through repository history as the historical baseline.
 
 ## Context
 
@@ -149,4 +147,6 @@ The decision prioritizes:
 * a current LTS release;
 * a longer support lifecycle;
 * compatibility with the current .NET ecosystem;
-* reduced need for anothe
+* reduced need for another near-term framework migration.
+
+Implementation status is tracked in the repository README and roadmap issue; this decision record is retained to explain why .NET 10 was selected.
