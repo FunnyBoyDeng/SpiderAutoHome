@@ -10,7 +10,7 @@ SpiderAutoHome 是一个 C# 教学仓库，通过 [DotnetSpider](https://github.
 
 项目源于 2018 年发布的中文实战教程。维护工作于 2026 年恢复，目标是保留原始教学价值，同时将示例迁移到受支持的 .NET 工具链，并记录 DotnetSpider 2.x 到 5.x 的真实迁移过程。
 
-> 三个示例均已升级至 .NET 10 和 DotnetSpider 5.1.7。解析器、请求构造、JSON 模型、URL 规范化与文件名处理均有离线测试覆盖。第三方网站的当前页面结构与 API 契约可能已与历史示例不同。
+> 三个示例均已升级至 .NET 10 和 DotnetSpider 5.1.7。解析器、请求构造、JSON 模型、URL 规范化与文件名处理已有 24 项离线测试覆盖。第三方网站的当前页面结构与 API 契约可能已与历史示例不同。
 
 ## 当前状态
 
@@ -41,6 +41,14 @@ dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configur
 
 ```bash
 dotnet run --project SpiderAutoHome/SpiderAutoHome.csproj
+```
+
+主示例支持设置列表地址和有上限的页数（1-100）：
+
+```bash
+SPIDERAUTOHOME_LIST_URL=https://example.com/permitted-list \
+SPIDERAUTOHOME_PAGE_COUNT=3 \
+  dotnet run --project SpiderAutoHome/SpiderAutoHome.csproj
 ```
 
 运行多阶段 SKU 示例时，可以使用历史默认详情页，也可以通过环境变量提供其他获准访问的详情页：
@@ -78,7 +86,7 @@ SPIDERAUTOHOME_LOGO_DIR=./img \
 - [维护自动化计划](docs/MAINTAINER_AUTOMATION.md)
 - [DotnetSpider 兼容性映射](DOTNETSPIDER_COMPATIBILITY.md)
 
-CI 会在 Windows 与 Linux 上执行还原、构建和离线测试，同时检查文档内部链接，并把编译器及 NuGet 漏洞警告视为构建错误；CodeQL 扫描受支持的 C# 项目，Dependabot 持续检查 NuGet 与 GitHub Actions 依赖。
+CI 会在 Windows 与 Linux 上执行还原、构建、格式检查和离线测试，同时检查文档内部链接，并把编译器及 NuGet 漏洞警告视为构建错误。依赖版本统一维护在 `Directory.Packages.props`；CodeQL 扫描受支持的 C# 项目，Dependabot 持续检查 NuGet 与 GitHub Actions 依赖。
 
 欢迎提交 issue 与 pull request，尤其是离线测试、文档、依赖维护、数据源结构变化报告和教程可访问性改进。
 

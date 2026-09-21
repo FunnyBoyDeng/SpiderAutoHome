@@ -9,6 +9,49 @@ namespace SpiderAutoHome.Tests;
 public class AutoHomeParserTests
 {
     [Fact]
+    public void RequestFactoryCreatesBoundedPostRequests()
+    {
+        var requests = AutoHomeRequestFactory.Create(
+            "https://example.com/list",
+            "3");
+
+        Assert.Collection(
+            requests,
+            request => AssertRequest(request, 1),
+            request => AssertRequest(request, 2),
+            request => AssertRequest(request, 3));
+    }
+
+    [Theory]
+    [InlineData("0")]
+    [InlineData("101")]
+    [InlineData("1.5")]
+    [InlineData("many")]
+    public void RequestFactoryRejectsInvalidPageCounts(string pageCount)
+    {
+        Assert.Throws<ArgumentOutOfRangeException>(
+            () => AutoHomeRequestFactory.Create(null, pageCount));
+    }
+
+    [Fact]
+    public void RequestFactoryRejectsNonHttpEndpoints()
+    {
+        Assert.Throws<ArgumentException>(
+            () => AutoHomeRequestFactory.Create("file:///tmp/list.html", "1"));
+    }
+
+    [Fact]
+    public void FormDataIsDeterministicAndUrlEncoded()
+    {
+        var formData = AutoHomeRequestFactory.CreateFormData(7);
+
+        Assert.StartsWith("id=7&j=%7B%22createMan%22", formData);
+        Assert.Contains("&page=7&shopid=83106681", formData);
+        Assert.DoesNotContain('{', formData);
+        Assert.DoesNotContain('"', formData);
+    }
+
+    [Fact]
     public async Task ParseAsyncExtractsCarInformation()
     {
         const string html = """
@@ -88,5 +131,16 @@ public class AutoHomeParserTests
 
         var cars = context.GetData("CarList") as List<AutoHomeShopListEntity>;
         return Assert.IsType<List<AutoHomeShopListEntity>>(cars);
+    }
+
+    private static void AssertRequest(Request request, int expectedPage)
+    {
+        Assert.Equal("https://example.com/list", request.RequestUri.AbsoluteUri);
+        Assert.Equal("POST", request.Method);
+        var content = Assert.IsType<DotnetSpider.Http.StringContent>(request.Content);
+        Assert.Equal(
+            AutoHomeRequestFactory.CreateFormData(expectedPage),
+            content.Content);
+        Assert.Equal("application/x-www-form-urlencoded", content.MediaType);
     }
 }

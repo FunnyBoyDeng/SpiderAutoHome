@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DotnetSpider" Version="5.1.7" />
-    <PackageReference Include="MessagePack" Version="2.5.303" />
+    <PackageReference Include="DotnetSpider" />
+    <PackageReference Include="MessagePack" />
   </ItemGroup>
 
 </Project>

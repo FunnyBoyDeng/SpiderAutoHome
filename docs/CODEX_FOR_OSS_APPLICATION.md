@@ -22,7 +22,7 @@ Primary maintainer.
 
 ### Why does this repository qualify? — 401/500 characters
 
-> SpiderAutoHome preserves a three-part Chinese DotnetSpider tutorial and source first published in 2018. The public repository has 20 GitHub stars and 2 forks and is now a tested migration reference from .NET Core 2.0/DotnetSpider 2.x to .NET 10/5.x. As primary maintainer, I triage issues, review changes, maintain CI and security controls, and have modernized all three samples with 17 offline tests.
+> SpiderAutoHome preserves a three-part Chinese DotnetSpider tutorial and source first published in 2018. The public repository has 20 GitHub stars and 2 forks and is now a tested migration reference from .NET Core 2.0/DotnetSpider 2.x to .NET 10/5.x. As primary maintainer, I triage issues, review changes, maintain CI and security controls, and have modernized all three samples with 24 offline tests.
 
 ### How will you use API credits? — 456/500 characters
 
@@ -30,7 +30,7 @@ Primary maintainer.
 
 ### Anything else? — 478/500 characters
 
-> This is a small but durable repository with Chinese-language ecosystem value. Maintenance resumed in 2026 after its original 2018 tutorial release. All three samples now build on .NET 10 with 17 offline xUnit tests on Windows and Linux, locked dependencies, GitHub Actions, CodeQL, bilingual documentation, and opt-in asset downloads. Success will be measured by review turnaround, fixture coverage, clean dependency audits, contributor activity, and documented modern releases.
+> This is a small but durable repository with Chinese-language ecosystem value. Maintenance resumed in 2026 after its original 2018 tutorial release. All three samples now build on .NET 10 with 24 offline xUnit tests on Windows and Linux, locked dependencies, GitHub Actions, CodeQL, bilingual documentation, and opt-in asset downloads. Success will be measured by review turnaround, fixture coverage, clean dependency audits, contributor activity, and documented modern releases.
 
 ## Before submitting or following up
 

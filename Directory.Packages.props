@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="DotnetSpider" Version="5.1.7" />
+    <!-- DotnetSpider 5.1.7 resolves MessagePack 2.5.140 transitively.
+         Keep the patched, API-compatible 2.5.x release explicit until upstream updates it. -->
+    <PackageVersion Include="MessagePack" Version="2.5.303" />
+    <PackageVersion Include="xunit.v3.mtp-v2" Version="4.0.1" />
+  </ItemGroup>
+</Project>

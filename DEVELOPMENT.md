@@ -7,6 +7,7 @@ This guide describes the verified development workflow for all three modernized 
 - .NET SDK 10.0 (selected by the repository's `global.json`)
 - DotnetSpider 5.1.7
 - xUnit v3 with Microsoft Testing Platform
+- Central package version management through `Directory.Packages.props`
 
 Check the active SDK:
 
@@ -28,6 +29,12 @@ Build in the same configuration used by CI:
 dotnet build SpiderAutoHome.Modern.slnx \
   --configuration Release \
   --no-restore
+```
+
+Verify repository formatting:
+
+```bash
+dotnet format SpiderAutoHome.Modern.slnx --verify-no-changes --no-restore
 ```
 
 Run the offline test executable:
@@ -79,6 +86,8 @@ dotnet run --project SpiderAutoHome/SpiderAutoHome.csproj
 ```
 
 This command contacts the configured endpoint. Before using it, confirm that the endpoint is still appropriate, review current access rules, and keep request volume conservative. External HTML and APIs can change independently of this repository, so a successful offline build does not guarantee live-site compatibility.
+
+The primary pagination sample accepts `SPIDERAUTOHOME_LIST_URL` and `SPIDERAUTOHOME_PAGE_COUNT`. The page count defaults to 33 and is capped at 100 so configuration errors cannot create an unbounded request batch.
 
 The SKU sample accepts an optional `SPIDERAUTOHOME_SKU_URL` environment variable. Its parser and request factory are tested with in-memory HTML and JSON fixtures.
 

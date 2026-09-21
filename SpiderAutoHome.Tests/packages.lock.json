@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "dependencies": {
     "net10.0": {
       "xunit.v3.mtp-v2": {
@@ -23,36 +23,10 @@
         "resolved": "2.1.35",
         "contentHash": "YKRwjVfrG7GYOovlGyQoMvr1/IJdn+7QzNXJxyMh0YfFF5yvDmTYaJOVYWsckreNjGsGSEtrMTpnzxTUq/tZQw=="
       },
-      "DotnetSpider": {
-        "type": "Transitive",
-        "resolved": "5.1.7",
-        "contentHash": "Y74bdvc2t723XuAZh1zdSvKaBTygYHs+IuLprqMvYaLKKOrfyz1xmv1+QWdcDigvGG47VY1tbCsqscDrtoQOZA==",
-        "dependencies": {
-          "Bert.RateLimiters": "1.0.15",
-          "Dapper": "2.1.35",
-          "HtmlAgilityPack": "1.11.61",
-          "MessagePack": "2.5.140",
-          "Microsoft.Extensions.Hosting": "8.0.0",
-          "Microsoft.Extensions.Http": "8.0.0",
-          "Newtonsoft.Json": "13.0.3",
-          "System.Data.SqlClient": "4.8.6",
-          "ZCJ.HashedWheelTimer": "0.10.2",
-          "murmurhash": "1.0.3"
-        }
-      },
       "HtmlAgilityPack": {
         "type": "Transitive",
         "resolved": "1.11.61",
         "contentHash": "hqZASeEFHS9quHvfZSwaULoAJLWkOYVPiQjc3P9J4pQS8vSYzrP3bxe04Vm7vYYuxwbQhq9hCSVvZVLTyRaNaQ=="
-      },
-      "MessagePack": {
-        "type": "Transitive",
-        "resolved": "2.5.303",
-        "contentHash": "kpIHwsflNKnWD8OyA8BjPspMG5PYXycxuftnkJk0e5sW8OLHa3CMovuYiRI/4NJ4al1AyW88Ai2g+WCwTaWzFg==",
-        "dependencies": {
-          "MessagePack.Annotations": "2.5.303",
-          "Microsoft.NET.StringTools": "17.6.3"
-        }
       },
       "MessagePack.Annotations": {
         "type": "Transitive",
@@ -538,6 +512,34 @@
         "dependencies": {
           "DotnetSpider": "[5.1.7, )",
           "MessagePack": "[2.5.303, )"
+        }
+      },
+      "DotnetSpider": {
+        "type": "CentralTransitive",
+        "requested": "[5.1.7, )",
+        "resolved": "5.1.7",
+        "contentHash": "Y74bdvc2t723XuAZh1zdSvKaBTygYHs+IuLprqMvYaLKKOrfyz1xmv1+QWdcDigvGG47VY1tbCsqscDrtoQOZA==",
+        "dependencies": {
+          "Bert.RateLimiters": "1.0.15",
+          "Dapper": "2.1.35",
+          "HtmlAgilityPack": "1.11.61",
+          "MessagePack": "2.5.140",
+          "Microsoft.Extensions.Hosting": "8.0.0",
+          "Microsoft.Extensions.Http": "8.0.0",
+          "Newtonsoft.Json": "13.0.3",
+          "System.Data.SqlClient": "4.8.6",
+          "ZCJ.HashedWheelTimer": "0.10.2",
+          "murmurhash": "1.0.3"
+        }
+      },
+      "MessagePack": {
+        "type": "CentralTransitive",
+        "requested": "[2.5.303, )",
+        "resolved": "2.5.303",
+        "contentHash": "kpIHwsflNKnWD8OyA8BjPspMG5PYXycxuftnkJk0e5sW8OLHa3CMovuYiRI/4NJ4al1AyW88Ai2g+WCwTaWzFg==",
+        "dependencies": {
+          "MessagePack.Annotations": "2.5.303",
+          "Microsoft.NET.StringTools": "17.6.3"
         }
       }
     }

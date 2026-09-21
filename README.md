@@ -11,7 +11,7 @@ SpiderAutoHome is an educational C# repository that shows three practical web-da
 
 The project began in 2018 as a Chinese tutorial series. Active maintenance resumed in 2026 to preserve those examples, make them reproducible on a supported .NET toolchain, and provide a small real-world migration reference from DotnetSpider 2.x to 5.x.
 
-> All three samples now build on .NET 10 and DotnetSpider 5.1.7. Their parsers, request construction, JSON models, URL normalization, and filename handling are covered by offline tests. Live third-party markup and API contracts may differ from the stored educational examples.
+> All three samples now build on .NET 10 and DotnetSpider 5.1.7. Their parsers, request construction, JSON models, URL normalization, and filename handling are covered by 24 offline tests. Live third-party markup and API contracts may differ from the stored educational examples.
 
 ## Why this repository is useful
 
@@ -59,6 +59,14 @@ Both `SpiderAutoHome.Modern.slnx` and the Visual Studio `SpiderAutoHome.sln` bui
 dotnet run --project SpiderAutoHome/SpiderAutoHome.csproj
 ```
 
+The main sample accepts an optional list endpoint and a bounded page count (1-100):
+
+```bash
+SPIDERAUTOHOME_LIST_URL=https://example.com/permitted-list \
+SPIDERAUTOHOME_PAGE_COUNT=3 \
+  dotnet run --project SpiderAutoHome/SpiderAutoHome.csproj
+```
+
 Run the multi-step SKU sample with its historical default detail URL, or supply another permitted detail page through the environment:
 
 ```bash
@@ -96,7 +104,7 @@ An original [demonstration video](https://www.bilibili.com/video/av24022630/) is
 - [DotnetSpider compatibility mapping](DOTNETSPIDER_COMPATIBILITY.md)
 - [Maintainer automation plan](docs/MAINTAINER_AUTOMATION.md)
 
-CI restores, builds, and runs offline tests on both Windows and Linux. It also verifies local documentation links and treats compiler and NuGet vulnerability warnings as errors. CodeQL scans the supported C# projects, and Dependabot monitors NuGet packages and GitHub Actions.
+CI restores, builds, verifies formatting, and runs offline tests on both Windows and Linux. It also verifies local documentation links and treats compiler and NuGet vulnerability warnings as errors. Package versions are managed centrally in `Directory.Packages.props`; CodeQL scans the supported C# projects, and Dependabot monitors NuGet packages and GitHub Actions.
 
 ## Contributing
 

@@ -50,6 +50,9 @@ jobs:
       - name: Build supported projects
         run: dotnet build SpiderAutoHome.Modern.slnx --configuration Release --no-restore
 
+      - name: Verify formatting
+        run: dotnet format SpiderAutoHome.Modern.slnx --verify-no-changes --no-restore
+
       - name: Run offline parser tests
         run: dotnet run --project SpiderAutoHome.Tests/SpiderAutoHome.Tests.csproj --configuration Release --no-build
 
